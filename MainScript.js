@@ -12,6 +12,10 @@ app.use(parser.urlencoded({ extended: false}));
 app.use(parser.json());
 app.set('port', 3000);
 
+app.post('/', function(req, res){
+  res.render('exercise');
+  });
+
 //mysql setup?
 app.get('/reset-table',function(req,res,next){
   var context = {};
@@ -30,9 +34,6 @@ app.get('/reset-table',function(req,res,next){
   });
 });
 
-app.get('/', function(req, res){
-  res.render('exercise');
-  });
 
 //Listeners
 document.addEventListener("DOMContentLoaded", newExercise);
