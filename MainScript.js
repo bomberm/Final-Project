@@ -44,8 +44,7 @@ function newExercise(){
 	var date = document.getElementById("date").value;
 	var type = document.getElementById("type").value;
 	
-	mysql.pool.query("INSERT INTO workouts (name, reps, date, lbs) VALUES(?)"+[name, reps, weight, date,type];
-	function(err, result){
+	mysql.pool.query("INSERT INTO workouts (name, reps, date, lbs) VALUES(?)"+[name, reps, weight, date,type], function(err, result){
     if(err){
       next(err);
       return;
