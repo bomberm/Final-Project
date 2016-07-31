@@ -1,0 +1,33 @@
+<h1> Exercise Tracker </h1>
+<form id="newExercise">
+  <fieldset>
+     <legend>Name</legend>
+	 <input type="text" name="name" id="name">
+	 <legend> Reps </legend>
+	 <input type="number" name="reps" id="reps>
+	 <legend> Weight </legend>
+	 <input type="number" name="weight" id="weight">
+	 <legend> Date </legend>
+	 <input type="date" name="date" id="date">
+	 <legend> Measurement Type </legend>
+	 <select>
+	   <option value="true">Pounds</option>
+	   <option value="false">Kilograms</option>
+	 <select>
+	 <input type="button" name="submit" id="submit>Submit New</input>
+  </fieldset>
+</form>
+<table border="thick">
+  <theader>
+    <th> Name </th>
+    <th> Content </th>
+  </theader>
+  <tbody>
+  {{#each display}}
+    <tr>
+	  <td> {{this.name}} </td>
+	  <td> {{this.content}} </td>
+	</tr>
+  {{/each}}
+  </tbody>
+</table>

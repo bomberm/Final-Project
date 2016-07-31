@@ -13,7 +13,7 @@ app.use(parser.json());
 app.set('port', 3000);
 
 app.get('/', function(req, res){
-  res.render('home');
+  res.render('exercise');
   });
 
 app.listen(app.get('port'), function(){
