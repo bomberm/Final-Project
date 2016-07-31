@@ -30,6 +30,10 @@ app.get('/reset-table',function(req,res,next){
   });
 });
 
+app.get('/', function(req, res){
+  res.render('exercise');
+  });
+
 //Listeners
 document.addEventListener("DOMContentLoaded", newExercise);
 
@@ -37,6 +41,7 @@ function newExercise(){
   document.getElementById("submit").addEventListener("click", function(event){
 	event.preventDefault();
 	var content ={}; 
+	
 	//gather form data
 	var name = document.getElementById("name").value;
 	var reps = document.getElementById("reps").value;
@@ -57,9 +62,7 @@ function newExercise(){
   });
 }
 	
-app.get('/', function(req, res){
-  res.render('exercise');
-  });
+
   
   
   
