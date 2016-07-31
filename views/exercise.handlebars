@@ -10,7 +10,7 @@
 	 <input type="number" name="weight" id="weight">
 	 <label> Date </label>
 	 <input type="date" name="date" id="date">
-	 <label> Measurement Type </label>
+	 <label> Weight Type </label>
 	 <select>
 	   <option value="true">Pounds</option>
 	   <option value="false">Kilograms</option>
@@ -21,13 +21,20 @@
 <table>
   <theader>
     <th> Name </th>
-    <th> Content </th>
+    <th> Reps </th>
+	<th> Date </th>
+	<th> lbs/kg? </th>
+	<th></th>
+	<th></th>
   </theader>
   <tbody>
   {{#each display}}
     <tr>
 	  <td> {{this.name}} </td>
-	  <td> {{this.content}} </td>
+	  <td> {{this.reps}} </td>
+	  <td> {{this.date}} </td>
+	  <td> <input type="button" name="edit" id={{this.id}} value="Edit"> </td>
+	  <td> <input type="button" name="delete" id={{this.id}} value="Delete"> </td>
 	</tr>
   {{/each}}
   </tbody>
