@@ -12,9 +12,29 @@ app.use(parser.urlencoded({ extended: false}));
 app.use(parser.json());
 app.set('port', 3000);
 
+//mysql setup?
+app.get('/reset-table',function(req,res,next){
+  var context = {};
+  mysql.pool.query("DROP TABLE IF EXISTS workouts", function(err){ //replace your connection pool with the your variable containing the connection pool
+    var createString = "CREATE TABLE workouts("+
+    "id INT PRIMARY KEY AUTO_INCREMENT,"+
+    "name VARCHAR(255) NOT NULL,"+
+    "reps INT,"+
+    "weight INT,"+
+    "date DATE,"+
+    "lbs BOOLEAN)";
+    mysql.pool.query(createString, function(err){
+      context.results = "Table reset";
+      res.render('reset',context);
+    })
+  });
+});
+
 app.get('/', function(req, res){
   res.render('exercise');
   });
+  
+  
   
   app.use(function(req,res){
   res.render('oops404');
