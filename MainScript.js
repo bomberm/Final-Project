@@ -25,8 +25,13 @@ app.get('/', function(req, res){
       next(err);
       return;
     }
+	for(var i=0; i<rows.length; i++){
+	  if(rows[i].lbs==1) rows[i].lbs="lbs";
+	  else rows[i].lbs="kg";
+	  rows[i].date=String(rows[i].date)
+	  rows[i].date=rows[i].date.substring(0,15);
+	  }
 	context.display=rows;
-	console.log(context);
     res.render('exercise', context);
   });
 });
