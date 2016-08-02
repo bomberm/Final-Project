@@ -27,20 +27,23 @@
 	<th> Date </th>
 	<th> lbs/kg? </th>
 	<th></th>
-	<th></th>
   </theader>
   <tbody>
   {{#each display}}
-    <tr>
-	  <td style="visibility:collapse;"> {{this.id}} </td>
-	  <td> {{this.name}} </td>
-	  <td> {{this.reps}} </td>
-	  <td> {{this.weight}} </td>
-	  <td> {{this.date}} </td>
-	  <td> {{this.lbs}} </td>
-	  <td> <input type="button" name="edit" id={{this.id}} value="Edit"> </td>
-	  <td> <input type="button" name="delete" id={{this.id}} value="Delete"> </td>
-	</tr>
+    <form id={{this.id}}> 
+	  <tr>
+	    <td style="visibility:collapse;"> {{this.id}} </td>
+	    <td> {{this.name}} </td>
+	    <td> {{this.reps}} </td>
+	    <td> {{this.weight}} </td>
+	    <td> {{this.date}} </td>
+	    <td> {{this.lbs}} </td>
+	    <td span=2> 
+	      <button onClick="editRow({{this.id}});return false;">Edit</button>
+	      <button onClick="deleteRow({{this.id}});return false;">Delete</button>
+	    </td>
+	  </tr>
+	</form>
   {{/each}}
   </tbody>
 </table>

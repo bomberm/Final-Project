@@ -1,7 +1,7 @@
 //Listeners
 document.addEventListener("DOMContentLoaded", newExercise);
 
-var counter=(-1);	//counter to work as ID placeholder for new rows
+
 function newExercise(){
   var root = document.getElementsByTagName("tbody")[0]; //grab the table for use in adding rows
   //submit button management
@@ -18,25 +18,38 @@ function newExercise(){
 	  type: document.getElementById("type").value
 	  }
 	  
-	console.log(content);
+	  
 	string="/insert?name="+content.name+"&reps="+content.reps+"&weight="+content.weight+"&date="+content.date+"&type="+content.type;
 	query.open("GET", string, true);
 	query.send(null);
-	query.addEventListener("load", function(){
+	query.addEventListener("load", function(){ 
       if(query.status >=200 && query.status < 400){
+	    var response = JSON.parse(query.responseText);
+		console.log(response);
         var row = document.createElement("tr");
 		root.appendChild(row);
-		var idCell = document.createElement("tr");
-		idCell.textContent=counter--;//assign temp ID for new cell to be used in case of an edit.
-		idCell.style.visibility="collapse";
-		row.appendChild(idCell);
-		for(item in content){
-		  console.log(content[item]);
+		var first = true; //cell collapse flag
+		if(response[0].lbs==1) response[0].lbs="lbs"
+		else response[0].lbs="kgs";
+		for(item in response[0]){
 		  var cell= document.createElement("td");
-		  cell.textContent=content[item];
+		  cell.textContent=response[0][item];
+		  if(first){ //collapses ID cell
+		   first=false;
+           cell.style.visibility="collapse";
+		   }
 		  row.appendChild(cell);
 		  }
-        console.log("Got to this point!");
+		var buttonCell = document.createElement("td");
+		var editButton = document.createElement("button");
+		var deleteButton = document.createElement("button");
+		editButton.style.onClick="editRow("+response[0].id+")";
+		editButton.style.name="edit";
+		buttonCell.appendChild(editButton);
+		deleteButton.style.onClick="deleteRow("+response[0].id+")"
+		deleteButton.style.name="delete";
+		buttonCell.appendChild(deleteButton);
+		row.appendChild(buttonCell);
         }
       else{
         var locate = document.getElementsByName("submit");
@@ -47,8 +60,29 @@ function newExercise(){
     });
   });
 }
-	
 
+function deleteRow(id){
+  var killCommand = new XMLHttpRequest();
+
+  string="/delete?id="+id;
+  killCommand.open("GET", string, true);
+  killCommand.send(null);
+  killCommand.addEventListener("load", function(){ 
+    if(killCommand.status >=200 && killCommand.status < 400){
+	  var row = document.getElementById(id);
+	  var parent = row.parentNode;
+	  parent.removeChild(row);
+	}
+    else{
+      console.log("Error: " + killCommand.statusText);
+      }
+	});
+}
+   
+  
+function editRow(id){
+  window.location.href = "/edit?id="+id;
+}	
 	
 
 	

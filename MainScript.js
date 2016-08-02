@@ -43,13 +43,31 @@ app.get('/insert',function(req,res,next){
       next(err);
       return;
     }
-    context.results = "Inserted id " + result.insertId;
+	resultID=result.insertId;
+    context.results = "Inserted id " + resultID;
 	console.log(context.results);
-    res.render('home',context);
+	var result=mysql.pool.query("SELECT * FROM workouts WHERE id="+resultID, function(err, rows, fields){
+	  if(err){
+	    next(err);
+		return;
+		}
+	  res.send(rows);
+	  });
   });
 });
   
-  
+app.get('/delete', function(req, res, next){
+  mysql.pool.query("DELETE FROM workouts WHERE id="+req.query.id, function(err, result){
+    if(err){
+      next(err);
+      return;
+      }
+	var response =  "Deleted contents of row "+req.query.id
+    console.log(response);
+	res.send(response);
+	});
+  });
+
 //mysql setup... I hope
 app.get('/reset-table',function(req,res,next){
   var context = {};
