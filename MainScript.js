@@ -1,9 +1,10 @@
 //Express and Parser Management
 var express = require('express');
-var app= express();
+var app = express();
 var handlebars = require('express-handlebars').create({defaultLayout:'default'});
 var parser = require('body-parser');
-var mysql = require('./server.js');
+var mysql = require('./public/javascripts/server.js');
+var path = require('path');
 
 //Express and Parser initialization
 app.engine('handlebars', handlebars.engine);
@@ -11,12 +12,40 @@ app.set('view engine', 'handlebars');
 app.use(parser.urlencoded({ extended: false}));
 app.use(parser.json());
 app.set('port', 3000);
+app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.post('/', function(req, res){
-  res.render('exercise');
+
+
+app.get('/', function(req, res){
+  var context = {display: []};
+  mysql.pool.query('SELECT * FROM workouts', function(err, rows, fields){
+    if(err){
+	  console.log("Something went wrong here");
+      next(err);
+      return;
+    }
+	context.display=rows;
+	console.log(context);
+    res.render('exercise', context);
   });
+});
 
-//mysql setup?
+app.get('/insert',function(req,res,next){
+  var context = {};
+  mysql.pool.query("INSERT INTO workouts (`name`, `reps`, `weight`, `date`, `lbs`) VALUES (?, ?, ?, ?, ?)", [req.query.name, req.query.reps, req.query.weight, req.query.date, req.query.type], function(err, result){
+    if(err){
+      next(err);
+      return;
+    }
+    context.results = "Inserted id " + result.insertId;
+	console.log(context.results);
+    res.render('home',context);
+  });
+});
+  
+  
+//mysql setup... I hope
 app.get('/reset-table',function(req,res,next){
   var context = {};
   mysql.pool.query("DROP TABLE IF EXISTS workouts", function(err){ //replace your connection pool with the your variable containing the connection pool

@@ -1,0 +1,15 @@
+<h1> POST Request Recieved </h1>
+<table border="thick">
+  <theader>
+    <th> Name </th>
+    <th> Content </th>
+  </theader>
+  <tbody>
+  {{#each display}}
+    <tr>
+	  <td> {{this.name}} </td>
+	  <td> {{this.content}} </td>
+	</tr>
+  {{/each}}
+  </tbody>
+</table>
