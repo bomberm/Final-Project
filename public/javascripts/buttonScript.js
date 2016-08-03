@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", newExercise);
 
 
 function newExercise(){
-  var root = document.getElementsByTagName("tbody")[0]; //grab the table for use in adding rows
+  var root = document.getElementById("theBody"); //grab the table for use in adding rows
   //submit button management
   document.getElementById("submit").addEventListener("click", function(event){
 	event.preventDefault();
@@ -17,8 +17,7 @@ function newExercise(){
 	  date: document.getElementById("date").value,
 	  type: document.getElementById("type").value
 	  }
-	  
-	  
+		
 	string="/insert?name="+content.name+"&reps="+content.reps+"&weight="+content.weight+"&date="+content.date+"&type="+content.type;
 	query.open("GET", string, true);
 	query.send(null);
@@ -40,15 +39,22 @@ function newExercise(){
 				row.appendChild(cell);
 		  }
 			var buttonCell = document.createElement("td");
+			row.appendChild(buttonCell);
 			var editButton = document.createElement("button");
 			var deleteButton = document.createElement("button");
-			editButton.style.onClick="editRow("+response[0].id+")";
 			editButton.style.name="edit";
+			editButton.innerHTML="Edit";
 			buttonCell.appendChild(editButton);
-			deleteButton.style.onClick="deleteRow("+response[0].id+")"
 			deleteButton.style.name="delete";
+			deleteButton.innerHTML="Delete";
 			buttonCell.appendChild(deleteButton);
-			row.appendChild(buttonCell);
+			deleteButton.onClick=function(){ 
+				deleteRow(response[0].id);
+				}
+			editButton.onClick=function(){
+				console.log(response[0].id);
+				editRow(response[0].id); 
+				};
       }
       else{
         var locate = document.getElementsByName("submit");

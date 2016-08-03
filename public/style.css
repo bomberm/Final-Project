@@ -1,0 +1,27 @@
+table{
+    table-layout: fixed;
+    width: 400px;
+		border-collapse: collapse;
+		empty-cells: hide;
+}
+
+h1 {
+	text-align: center;
+}
+
+legend {
+	font-size:larger;
+	}
+	
+th, td {
+	  text-align: center;
+		font-size: smaller;
+    overflow: hidden;
+    width: 150px;
+}
+
+tr:nth-of-type(even)
+{
+  background-color:gray;
+}
+

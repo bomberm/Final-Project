@@ -18,17 +18,17 @@
 	 <input type="button" name="submit" id="submit" value="New Exercise">
   </fieldset>
 </form>
-<table border="thick">
+<table>
   <theader>
     <th style="visibility:collapse;">id</td>
     <th> Name </th>
     <th> Reps </th>
-	<th> Weight </th>
-	<th> Date </th>
-	<th> lbs/kg? </th>
-	<th></th>
+		<th> Weight </th>
+		<th> Date </th>
+		<th> lbs/kg? </th>
+		<th></th>
   </theader>
-  <tbody>
+  <tbody id="theBody">
   {{#each display}}
 	  <tr id={{this.id}}>
 	    <td style="visibility:collapse;"> {{this.id}} </td>
@@ -37,7 +37,7 @@
 	    <td> {{this.weight}} </td>
 	    <td> {{this.date}} </td>
 	    <td> {{this.lbs}} </td>
-	    <td span=2> 
+	    <td> 
 	      <button onClick="editRow({{this.id}});return false;">Edit</button>
 	      <button onClick="deleteRow({{this.id}});return false;">Delete</button>
 	    </td>
