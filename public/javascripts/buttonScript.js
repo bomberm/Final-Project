@@ -24,33 +24,32 @@ function newExercise(){
 	query.send(null);
 	query.addEventListener("load", function(){ 
       if(query.status >=200 && query.status < 400){
-	    var response = JSON.parse(query.responseText);
-		console.log(response);
+				var response = JSON.parse(query.responseText);
         var row = document.createElement("tr");
-		root.appendChild(row);
-		var first = true; //cell collapse flag
-		if(response[0].lbs==1) response[0].lbs="lbs"
-		else response[0].lbs="kgs";
-		for(item in response[0]){
-		  var cell= document.createElement("td");
-		  cell.textContent=response[0][item];
-		  if(first){ //collapses ID cell
-		   first=false;
-           cell.style.visibility="collapse";
-		   }
-		  row.appendChild(cell);
+			root.appendChild(row);
+			var first = true; //cell collapse flag
+			if(response[0].lbs==1) response[0].lbs="lbs"
+			else response[0].lbs="kgs";
+			for(item in response[0]){
+				var cell= document.createElement("td");
+				cell.textContent=response[0][item];
+				if(first){ //collapses ID cell
+				first=false;
+        cell.style.visibility="collapse";
+				}
+				row.appendChild(cell);
 		  }
-		var buttonCell = document.createElement("td");
-		var editButton = document.createElement("button");
-		var deleteButton = document.createElement("button");
-		editButton.style.onClick="editRow("+response[0].id+")";
-		editButton.style.name="edit";
-		buttonCell.appendChild(editButton);
-		deleteButton.style.onClick="deleteRow("+response[0].id+")"
-		deleteButton.style.name="delete";
-		buttonCell.appendChild(deleteButton);
-		row.appendChild(buttonCell);
-        }
+			var buttonCell = document.createElement("td");
+			var editButton = document.createElement("button");
+			var deleteButton = document.createElement("button");
+			editButton.style.onClick="editRow("+response[0].id+")";
+			editButton.style.name="edit";
+			buttonCell.appendChild(editButton);
+			deleteButton.style.onClick="deleteRow("+response[0].id+")"
+			deleteButton.style.name="delete";
+			buttonCell.appendChild(deleteButton);
+			row.appendChild(buttonCell);
+      }
       else{
         var locate = document.getElementsByName("submit");
         var message = document.createElement("div");
@@ -83,8 +82,31 @@ function deleteRow(id){
 function editRow(id){
   window.location.href = "/edit?id="+id;
 }	
-	
 
+function finish(){
+  var update= new XMLHttpRequest();
+	
+	var content={
+	id: document.getElementById("myID").value,
+	name: document.getElementById("name").value,
+	reps: document.getElementById("reps").value,
+	weight: document.getElementById("weight").value,
+	date: document.getElementById("date").value,
+	type: document.getElementById("type").value
+	}
+	
+	var string="/update?id="+content.id+"&name="+content.name+"&reps="+content.reps+"&weight="+content.weight+"&date="+content.date+"&lbs="+content.type;
+	update.open("GET", string, true);
+	update.send(null);
+	update.addEventListener("load", function(){
+		if(update.status >=200 && update.status < 400){
+		  window.location.href = "/"; //if edit is successful, just need to return to main page
+		}
+		else{
+			console.log("Error: "+update.statusText);
+		}
+	});
+}	
 	
 
   

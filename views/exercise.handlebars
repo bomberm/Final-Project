@@ -1,5 +1,5 @@
 <h1> Exercise Tracker </h1>
-<form action=id="newExercise">
+<form id="newExercise">
   <fieldset>
      <legend>New Exercise</legend>
 	 <label>Name</label>
@@ -30,8 +30,7 @@
   </theader>
   <tbody>
   {{#each display}}
-    <form id={{this.id}}> 
-	  <tr>
+	  <tr id={{this.id}}>
 	    <td style="visibility:collapse;"> {{this.id}} </td>
 	    <td> {{this.name}} </td>
 	    <td> {{this.reps}} </td>
@@ -43,7 +42,6 @@
 	      <button onClick="deleteRow({{this.id}});return false;">Delete</button>
 	    </td>
 	  </tr>
-	</form>
   {{/each}}
   </tbody>
 </table>

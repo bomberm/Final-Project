@@ -17,9 +17,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 
-app.get('/', function(req, res){
+app.get('/', function(req, res, next){
   var context = {display: []};
-  mysql.pool.query('SELECT * FROM workouts', function(err, rows, fields){
+  mysql.pool.query("SELECT id, name, reps, weight, DATE_FORMAT(date,'%Y-%m-%d') AS date, lbs FROM `workouts`", function(err, rows, fields){
     if(err){
 	  console.log("Something went wrong here");
       next(err);
@@ -46,7 +46,7 @@ app.get('/insert',function(req,res,next){
 	resultID=result.insertId;
     context.results = "Inserted id " + resultID;
 	console.log(context.results);
-	var result=mysql.pool.query("SELECT * FROM workouts WHERE id="+resultID, function(err, rows, fields){
+	var result=mysql.pool.query("SELECT id, name, reps, weight, DATE_FORMAT(date,'%Y-%m-%d') AS date, lbs FROM workouts WHERE id="+resultID, function(err, rows, fields){
 	  if(err){
 	    next(err);
 		return;
@@ -66,7 +66,40 @@ app.get('/delete', function(req, res, next){
     console.log(response);
 	res.send(response);
 	});
-  });
+});
+
+
+app.get('/edit', function(req, res, next){
+  mysql.pool.query("SELECT  id, name, reps, weight, DATE_FORMAT(date,'%Y-%m-%d') AS date, lbs FROM workouts WHERE id="+req.query.id, function(err, rows, fields){
+	  if(err){
+			next(err);
+			return;
+			}
+		res.render('GETview', rows[0]);
+	});
+});
+
+app.get('/update', function(req, res, next){
+  mysql.pool.query("SELECT * FROM workouts WHERE id=?", [req.query.id], function(err, rows, fields){
+    if(err){
+      next(err);
+      return;
+    }
+	  var current= rows[0];
+		console.log(current);
+		var search="UPDATE workouts SET name=?, reps=?, weight=?, date=?, lbs=? WHERE id=? " //moved for debugging, no need to move back
+  mysql.pool.query(search, [req.query.name || current.name, req.query.reps || current.reps, req.query.weight || current.weight, req.query.date || current.date, req.query.lbs || current.lbs, current.id], 
+		function(err, result){
+			if(err){
+				next(err);
+				return;
+			}
+			var result = "Updated "+ result.changedRows + " rows.";
+			console.log(result);
+			res.send(result);
+		});
+	});
+});
 
 //mysql setup... I hope
 app.get('/reset-table',function(req,res,next){
@@ -86,10 +119,6 @@ app.get('/reset-table',function(req,res,next){
   });
 });
 
-
-  app.use(function(req,res){
-  res.render('oops404');
-});
 
 app.use(function(err, req, res, next){
   console.error(err.stack);
